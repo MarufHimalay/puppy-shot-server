@@ -5,13 +5,15 @@ require('dotenv').config()
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vo54x.mongodb.net/puppy-shot?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vo54x.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const port = 5055;
 
 client.connect(err => {
     const productCollection = client.db("puppy-shot").collection("products");
@@ -67,4 +69,4 @@ client.connect(err => {
 console.log("listening");
 
 
-app.listen(5055);
+app.listen(process.env.PORT || port);
